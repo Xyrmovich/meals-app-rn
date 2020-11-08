@@ -7,6 +7,9 @@ import { enableScreens } from 'react-native-screens';
 
 import MealNavigator from './navigation/Meals.navigator';
 
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+
 enableScreens();
 
 const fetchFonts = () => {
@@ -29,7 +32,11 @@ export default function App(props) {
     );
   }
 
-  return <MealNavigator />;
+  return (
+    <Provider store={store}>
+      <MealNavigator />
+    </Provider>
+  );
 }
 
 const styles = StyleSheet.create({});

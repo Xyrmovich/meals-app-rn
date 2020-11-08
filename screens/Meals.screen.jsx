@@ -1,50 +1,29 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
-import MealItem from '../components/MealItem.component';
+import { CATEGORIES } from '../data/data';
 
-import { CATEGORIES, MEALS } from '../data/data';
+import MealList from '../components/MealList.component';
+import DefaultText from '../components/DefaultText.component';
 
 const CategoryMealsScreen = (props) => {
   const { navigation } = props;
   const catId = navigation.getParam('categoryId');
 
-  const displayedMeals = MEALS.filter(
+  const availableMeals = useSelector((state) => state.meals.filteredMeals);
+
+  const displayedMeals = availableMeals.filter(
     (meal) => meal.categoryIds.indexOf(catId) >= 0
   );
 
-  const renderItem = (itemData) => {
-    const { item } = itemData;
-
-    return (
-      <MealItem
-        title={item.title}
-        duration={item.duration}
-        complexity={item.complexity}
-        affordability={item.affordability}
-        imageUrl={item.imageUrl}
-        onSelectMeal={() => {
-          navigation.navigate({
-            routeName: "MealDetail",
-            params: {
-              mealId: item.id
-            }
-          })
-        }}
-      />
-    );
-  };
-
-  return (
-    <View style={styles.screen}>
-      <FlatList
-        data={displayedMeals}
-        renderItem={renderItem}
-        style={{ width: '100%' }}
-        contentContainerStyle={{ alignItems: 'center' }}
-      />
+  if(displayedMeals.length === 0){
+    return <View style={styles.content}>
+      <DefaultText>No meals found, maybe check your filters?</DefaultText>
     </View>
-  );
+  }
+
+  return <MealList listData={displayedMeals} navigation={navigation} />;
 };
 
 CategoryMealsScreen.navigationOptions = (navigationData) => {
@@ -59,7 +38,7 @@ CategoryMealsScreen.navigationOptions = (navigationData) => {
 };
 
 const styles = StyleSheet.create({
-  screen: {
+  content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

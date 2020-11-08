@@ -7,6 +7,8 @@ import {
   ImageBackground,
 } from 'react-native';
 
+import DefaultText from './DefaultText.component';
+
 const MealItem = (props) => {
   const {
     title,
@@ -27,13 +29,17 @@ const MealItem = (props) => {
               style={styles.bgImage}
               resizeMode='stretch'
             >
-              <Text style={styles.title}>{title}</Text>
+              <DefaultText style={styles.title}>{title}</DefaultText>
             </ImageBackground>
           </View>
           <View style={{ ...styles.mealDetail, ...styles.mealRow }}>
-            <Text numberOfLines={1}>{duration}m</Text>
-            <Text numberOfLines={1}>{complexity.toUpperCase()}</Text>
-            <Text numberOfLines={1}>{affordability.toUpperCase()}</Text>
+            <DefaultText numberOfLines={1}>{duration}m</DefaultText>
+            <DefaultText numberOfLines={1}>
+              {complexity.toUpperCase()}
+            </DefaultText>
+            <DefaultText numberOfLines={1}>
+              {affordability.toUpperCase()}
+            </DefaultText>
           </View>
         </View>
       </TouchableOpacity>
@@ -81,6 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     paddingVertical: '1.5%',
     paddingHorizontal: '3.5%',
+    textAlign: 'center',
   },
 });
 
